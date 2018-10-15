@@ -8,8 +8,6 @@ import (
 	"golang.org/x/crypto/bn256"
 )
 
-func main() {
-}
 func Test_BLS_Short_Signature_Scheme(t *testing.T) {
 
 	// key generation
