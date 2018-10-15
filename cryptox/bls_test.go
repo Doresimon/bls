@@ -76,17 +76,17 @@ func Benchmark_Verify(b *testing.B) {
 func Benchmark_Short_Scheme(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
-		// sk, pk := KeyGenerate()
+		sk, pk := KeyGenerate()
 		KeyGenerate()
 
-		// msg := "hello world"
-		// sig := Sign(sk, msg)
+		msg := "hello world"
+		sig := Sign(sk, msg)
 
-		// ok := Verify(pk, msg, sig)
+		ok := Verify(pk, msg, sig)
 
-		// if !ok {
-		// 	b.Error("verification failed.")
-		// }
+		if !ok {
+			b.Error("verification failed.")
+		}
 
 	}
 }
