@@ -49,3 +49,26 @@ func Test_BLS_Aggregate_Signature_Scheme(t *testing.T) {
 
 	// end
 }
+
+func Benchmark_KeyGenerate(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		KeyGenerate()
+	}
+}
+func Benchmark_Sign(b *testing.B) {
+	sk, _ := KeyGenerate()
+	msg := "hello world"
+
+	for i := 0; i < b.N; i++ {
+		Sign(sk, msg)
+	}
+}
+func Benchmark_Verify(b *testing.B) {
+	sk, pk := KeyGenerate()
+	msg := "hello world"
+	sig := Sign(sk, msg)
+
+	for i := 0; i < b.N; i++ {
+		Verify(pk, msg, sig)
+	}
+}
