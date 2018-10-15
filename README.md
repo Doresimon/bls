@@ -41,3 +41,14 @@ signatures give rise to verifiably encrypted signatures. Such signatures enable 
 that a given ciphertext C is the encryption of a signature on a given message M. Verifiably
 encrypted signatures are used in contract-signing protocols. Finally, we show that similar ideas
 can be used to extend the short signature scheme to give simple ring signatures.
+
+# Usage
+
+fetch:
+
+> go get -u github.com/Doresimon/bls
+
+test
+
+> go test
+
