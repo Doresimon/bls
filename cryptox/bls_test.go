@@ -1,4 +1,4 @@
-package bls
+package cryptox
 
 import (
 	"math/big"
@@ -70,5 +70,23 @@ func Benchmark_Verify(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		Verify(pk, msg, sig)
+	}
+}
+
+func Benchmark_Short_Scheme(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+
+		// sk, pk := KeyGenerate()
+		KeyGenerate()
+
+		// msg := "hello world"
+		// sig := Sign(sk, msg)
+
+		// ok := Verify(pk, msg, sig)
+
+		// if !ok {
+		// 	b.Error("verification failed.")
+		// }
+
 	}
 }

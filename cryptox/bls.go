@@ -1,4 +1,4 @@
-package bls
+package cryptox
 
 import (
 	"crypto/rand"
@@ -11,8 +11,9 @@ import (
 )
 
 // KeyGenerate () (*big.Int, *bn256.G2)
-// Key Generation. For a particular user, pick random x R Zp, and compute v g2x. The user’s
-// public key is v 2 G2. The user’s secret key is x 2 Zp.
+// Key Generation. For a particular user, pick random x <-$- Zp,
+// and compute v = g2^x. The user’s
+// public key is v <--- G2. The user’s secret key is x <--- Zp.
 func KeyGenerate() (*big.Int, *bn256.G2) {
 	sk, pk, _ := bn256.RandomG2(rand.Reader)
 	return sk, pk

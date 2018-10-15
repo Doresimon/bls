@@ -55,3 +55,8 @@ test
 benchmark
 
 > go test --bench .
+
+# note
+
+The version with go official x/crypto/bn256 is 5 times faster
+than the version with amcl milagro go/FP256BN.
