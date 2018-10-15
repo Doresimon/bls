@@ -13,7 +13,7 @@ similar level of security. Our short signature scheme is designed for
 systems where signatures are typed in by a human or signatures are sent
 over a low-bandwidth channel.
 
-## BLS aggragated signature based on BLS short signature
+## BLS aggregated signature based on BLS short signature
 
 [Aggregate and Verifiably Encrypted Signatures from Bilinear Maps]()
 
