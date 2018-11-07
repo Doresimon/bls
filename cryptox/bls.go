@@ -1,6 +1,7 @@
 package cryptox
 
 import (
+	"crypto"
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
@@ -10,13 +11,56 @@ import (
 	"golang.org/x/crypto/bn256"
 )
 
+const (
+	// PublicKeySize is the size, in bytes, of public keys as used in this package.
+	PublicKeySize = 32
+	// PrivateKeySize is the size, in bytes, of private keys as used in this package.
+	PrivateKeySize = 64
+	// SignatureSize is the size, in bytes, of signatures generated and verified by this package.
+	SignatureSize = 64
+	// SeedSize is the size, in bytes, of private key seeds. These are the private key representations used by RFC 8032.
+	SeedSize = 32
+)
+
+// PublicKey is the type of Ed25519 public keys.
+type PublicKey []byte
+
+// PrivateKey is the type of Ed25519 private keys. It implements crypto.Signer.
+type PrivateKey []byte
+
+// Public returns the PublicKey corresponding to priv.
+func (priv PrivateKey) Public() crypto.PublicKey {
+	publicKey := make([]byte, PublicKeySize)
+	copy(publicKey, priv[32:])
+	return PublicKey(publicKey)
+}
+
+//
+func (priv PrivateKey) Sign(message []byte) (signature []byte, err error) {
+	sk := big.NewInt(0).SetBytes(priv)
+	sig := Sign(sk, string(message))
+
+	return sig.Marshal(), nil
+}
+
+// Verify reports whether sig is a valid signature of message by publicKey. It
+// will panic if len(publicKey) is not PublicKeySize.
+func (pub PublicKey) Verify(message, sigBytes []byte) bool {
+	sig, _ := (*bn256.G1).Unmarshal(new(bn256.G1).ScalarBaseMult(big.NewInt(1)), sigBytes)
+	pk, _ := (*bn256.G2).Unmarshal(new(bn256.G2).ScalarBaseMult(big.NewInt(1)), pub)
+
+	return Verify(pk, string(message), sig)
+}
+
 // KeyGenerate () (*big.Int, *bn256.G2)
 // Key Generation. For a particular user, pick random x <-$- Zp,
 // and compute v = g2^x. The user’s
 // public key is v <--- G2. The user’s secret key is x <--- Zp.
-func KeyGenerate() (*big.Int, *bn256.G2) {
+func KeyGenerate() (*big.Int, *bn256.G2, PrivateKey, PublicKey) {
 	sk, pk, _ := bn256.RandomG2(rand.Reader)
-	return sk, pk
+	skBytes := sk.Bytes()
+	pkBytes := pk.Marshal()
+	return sk, pk, PrivateKey(skBytes), PublicKey(pkBytes)
 }
 
 // Sign (sk *big.Int, msg string) *bn256.G1
